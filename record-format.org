@@ -1,0 +1,13 @@
+* Title of the Program(s)
+* Date
+* Name (?)
+* Section headings
+* Under each section numbered programs
+* For reach program
+  1. Problem description
+  2. Specification
+  3. Algorithm design
+  4. Algorithm (if not trivial)
+  5. Program
+  6. Test input
+  7. Test result
