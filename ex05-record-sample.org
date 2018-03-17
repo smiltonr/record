@@ -1,0 +1,128 @@
+#+TITLE: Exercise 5: Arrays
+#+NAME: 
+#+DATE: 22 February 2018
+#+OPTIONS: toc:nil
+#+LaTeX_HEADER: \usepackage{palatino}
+#+LaTeX_HEADER: \usepackage[top=1in, bottom=1.25in, left=1.25in, right=1.25in]{geometry}
+
+* Polish National Flag
+#+LATEX: \linespread{1.2}
+** Problem description
+In an array of items =a[low:high]=, each item is either positive or
+negative. Define a function =PNF(a, low, high)= that partitions the
+array into two subarrays =a[low:i]= and =a[i:high]= such that all the
+negative items of the array form =[low:i]=, and all the positive items
+form =[i:n]=. Test the function from =main()=. Use several lists of
+numbers for testing.
+
+** Specification
+Function =PNF(a, low, high)= takes three parameters. =a= is the array
+of numbers, =low= and =high= are the lower bound and the upper bound
+of the subarray to be partitioned. After partitioning, the subarray
+=a[low:high]= would have been rearranged. The function returns an
+index =i= such that subarray =[low:i]= consists of all negative items,
+and subarray =[i:high]= consists of all positive items.
+#+BEGIN_EXAMPLE
+int pnf (int a[], int low, int high)
+#+END_EXAMPLE
+
+** Program design
+The program consists of 3 functions:
+1. =PNF(a, low, high)=: partitions the array.
+2. =swap (a, i, j)= swaps the contents of =a[i]= and =a[j]=.
+3. =read_numbers(a)= reads a list of numbers from
+   =stdin= and stores them array =a=. It also
+   returns the count of items.
+4. =print_numbers(a, low, high)= prints
+   =a[low:high]= to =stdout=. 
+5. =main()= reads a list of numbers using
+   =read_numbers()=, tests =PNF()=, and prints the result
+
+** Algorithm
+The algorithm for PNF is given below:
+#+BEGIN_EXAMPLE
+PNF (a, low, high)
+   i, j := low, low
+   while j != high
+      if a[j] < 0
+         swap (a, i, j)
+         i := i + 1
+      j := j +1
+   return i
+#+END_EXAMPLE
+
+** Program
+The program consists of 3 functions:
+1. =PNF(a, low, high)=
+2. =swap (a, i, j)=
+3. =read_numbers(a)=
+4. =main()=
+
+#+BEGIN_SRC C :cmdline <ex05-record.in :results verbatim :exports both
+#include <stdio.h>
+
+int read_array (int a[]);
+void print_array (int a[], int low, int high);
+int partition (int a[], int n);
+void swap (int a[], int i, int j);
+
+int main ()
+{
+  int a[100];
+  int n;
+  int i;
+  
+  n = read_array(a);
+  print_array (a, 0, n);
+  i = partition (a, n);
+  print_array (a, 0, i);
+  print_array (a, i, n);  
+}
+
+int read_array (int a[])
+{
+  int i;
+  for (i = 0; scanf ("%d", &a[i]) == 1; i++)
+    ;
+  return i;
+}
+
+void print_array (int a[], int low, int high)
+{
+  int i;
+  
+  for (i = low; i < high; i++)
+    printf ("%d,", a[i]);
+  printf ("\n");
+}
+
+int partition (int a[], int n)
+{
+  int i, j;
+
+  i = 0;
+  j = 0;
+  while (j != n) {
+    if (a[j] < 0) {
+      swap (a, i, j);
+      i++;
+    }
+    j++;
+  }
+  return i;
+}
+
+void swap (int a[], int i, int j)
+{
+  int t = a[i];
+  a[i] = a[j];
+  a[j] = t;
+}
+#+END_SRC
+
+#+RESULTS:
+: 30,-10,-60,-90,20,50,-40,70,
+: -10,-60,-90,-40,
+: 20,50,30,70,
+
+** Testing
